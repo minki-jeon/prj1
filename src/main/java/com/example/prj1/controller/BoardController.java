@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,14 +29,14 @@ public class BoardController {
     public String write(BoardForm data) {
         boardService.add(data);
 
-        return "board/write";
+        return "redirect:/board/write";
     }
 
     @GetMapping("list")
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "1") Integer page,
+                       Model model) {
 
-
-        var result = boardService.list();
+        var result = boardService.list(page);
 
         model.addAttribute("boardList", result);
 
