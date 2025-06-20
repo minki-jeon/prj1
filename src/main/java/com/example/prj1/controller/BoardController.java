@@ -38,9 +38,20 @@ public class BoardController {
 
         var result = boardService.list(page);
 
-        model.addAttribute("boardList", result);
+//      model.addAttribute("boardList", result);
+        model.addAllAttributes(result);
 
         return "board/list";
     }
 
+
+    @GetMapping("view")
+    public String view(Integer id, Model model) {
+
+        var dto = boardService.get(id);
+
+        model.addAttribute("board", dto);
+
+        return "board/view";
+    }
 }
