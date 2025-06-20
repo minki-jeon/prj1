@@ -18,3 +18,11 @@ FROM board;
 # board list select
 SELECT id, title, writer, created_at
 FROM board;
+
+
+# 페이지 용 글 복사
+INSERT INTO board (title, content, writer)
+SELECT title, content, writer
+FROM board;
+select count(*)
+from board;
