@@ -5,8 +5,12 @@ import com.example.prj1.dto.BoardListInfo;
 import com.example.prj1.entity.Board;
 import com.example.prj1.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,10 +30,13 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public List<BoardListInfo> list() {
+    public List<BoardListInfo> list(Integer page) {
+        // 전체 조회
 //        List<Board> list = boardRepository.findAll();
         // projection
-        List<BoardListInfo> boardList = boardRepository.findAllBy();
+//        List<BoardListInfo> boardList = boardRepository.findAllBy();
+        // paging
+        List<BoardListInfo> boardList = boardRepository.findAllBy(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
 
         return boardList;
     }
