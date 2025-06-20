@@ -1,0 +1,3 @@
+CREATE DATABASE prj1;
+USE prj1;
+
