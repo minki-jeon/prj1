@@ -1,6 +1,7 @@
 CREATE DATABASE prj1;
 USE prj1;
 
+# board create
 CREATE TABLE board
 (
     id         INT AUTO_INCREMENT NOT NULL,
@@ -11,4 +12,9 @@ CREATE TABLE board
     CONSTRAINT pk_board PRIMARY KEY (id)
 );
 SELECT *
+FROM board;
+
+
+# board list select
+SELECT id, title, writer, created_at
 FROM board;
