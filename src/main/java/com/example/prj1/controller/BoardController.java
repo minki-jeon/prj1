@@ -28,10 +28,12 @@ public class BoardController {
     }
 
     @PostMapping("write")
-    public String write(BoardForm data) {
+    public String write(BoardForm data, RedirectAttributes rttr) {
         boardService.add(data);
 
-        return "redirect:/board/write";
+        rttr.addFlashAttribute("alert", Map.of("code", "primary", "message", "새 게시물이 등록되었습니다."));
+
+        return "redirect:/board/list";
     }
 
     @GetMapping("list")
@@ -65,5 +67,23 @@ public class BoardController {
                 Map.of("code", "danger", "message", id + "번 게시물이 삭제 되었습니다."));
 
         return "redirect:/board/list";
+    }
+
+    @GetMapping("edit")
+    public String edit(Integer id, Model model) {
+        var dto = boardService.get(id);
+        model.addAttribute("board", dto);
+        return "board/edit";
+    }
+
+    @PostMapping("edit")
+    public String edit(BoardForm data, RedirectAttributes rttr) {
+        boardService.update(data);
+
+        rttr.addFlashAttribute("alert", Map.of("code", "success", "message", data.getId() + "번 게시물이 수정되었습니다."));
+
+        rttr.addAttribute("id", data.getId());
+
+        return "redirect:/board/view";
     }
 }
