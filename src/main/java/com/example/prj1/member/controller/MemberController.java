@@ -1,6 +1,7 @@
 package com.example.prj1.member.controller;
 
-import com.example.prj1.dto.MemberForm;
+import com.example.prj1.member.dto.MemberForm;
+import com.example.prj1.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ import java.util.Map;
 @RequestMapping("member")
 public class MemberController {
 
+    private final MemberService memberService;
+
     @GetMapping("signup")
     public String signupFrom() {
         return "member/signup";
@@ -24,6 +27,7 @@ public class MemberController {
     public String signup(MemberForm data, RedirectAttributes rttr) {
         //service
         System.out.println(data);
+        memberService.add(data);
 
         rttr.addFlashAttribute("alert", Map.of("code", "", "message", "회원가입이 완료되었습니다."));
 
