@@ -33,6 +33,10 @@
                     <button type="button" data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary">
                         저장
                     </button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#editPasswordModal"
+                            class="btn btn-outline-warning">
+                        암호 변경
+                    </button>
                 </div>
             </form>
 
@@ -41,7 +45,47 @@
 </div>
 
 
-<!-- Modal -->
+<!-- 암호 변경 Modal -->
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">암호 변경</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" th:action="@{/member/changePw}" method="post">
+
+                    <input type="hidden" name="id" th:value="${member.id}">
+
+                    <div>
+                        <!--                        label.form-label+input.form-control-->
+                        <label for="inputPassword" class="form-label">기존 암호</label>
+                        <input placeholder="기존 암호를 입력하세요."
+                               name="oldPassword"
+                               id="inputPassword1" type="password" class="form-control">
+                    </div>
+
+                    <div>
+                        <!--                        label.form-label+input.form-control-->
+                        <label for="inputPassword" class="form-label">새 암호</label>
+                        <input placeholder="기존 암호를 입력하세요."
+                               name="newPassword"
+                               id="inputPassword2" type="password" class="form-control">
+                    </div>
+          
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" form="changePasswordForm" class="btn btn-primary">암호 변경</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 닉네임, 자기소개 변경 Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
