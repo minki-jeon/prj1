@@ -1,18 +1,16 @@
-package com.example.prj1.service;
+package com.example.prj1.board.service;
 
-import com.example.prj1.dto.BoardDto;
-import com.example.prj1.dto.BoardForm;
-import com.example.prj1.dto.BoardListInfo;
-import com.example.prj1.entity.Board;
-import com.example.prj1.repository.BoardRepository;
+import com.example.prj1.board.dto.BoardDto;
+import com.example.prj1.board.dto.BoardForm;
+import com.example.prj1.board.dto.BoardListInfo;
+import com.example.prj1.board.entity.Board;
+import com.example.prj1.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
