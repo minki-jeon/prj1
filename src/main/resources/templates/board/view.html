@@ -36,8 +36,21 @@
                 <input class="form-control" type="text" name="" id="inputCreated" th:value="${board.createdAt}"
                        readonly>
             </div>
+
+            <div>
+                <button class="btn btn-primary" form="removeForm">삭제</button>
+                <button class="btn btn-primary">수정</button>
+            </div>
+
         </div>
     </div>
+</div>
+
+<!-- display: none -->
+<div class="d-none">
+    <form id="removeForm" th:action="@{/board/remove}" method="post">
+        <input type="text" name="id" th:value="${board.id}">
+    </form>
 </div>
 
 <th:block th:replace="~{layout/main::commonScript}"/>
