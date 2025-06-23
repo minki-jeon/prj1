@@ -22,15 +22,20 @@ public class MemberService {
         Optional<Member> db = memberRepository.findById(data.getId());
 
         if (db.isEmpty()) {
-            // Entity
-            Member member = new Member();
-            // Entity-Set
-            member.setId(data.getId());
-            member.setPassword(data.getPassword());
-            member.setNickName(data.getNickName());
-            member.setInfo(data.getInfo());
-            // save
-            memberRepository.save(member);
+            Optional<Member> byNickName = memberRepository.findByNickName(data.getNickName());
+            if (byNickName.isEmpty()) {
+                // Entity
+                Member member = new Member();
+                // Entity-Set
+                member.setId(data.getId());
+                member.setPassword(data.getPassword());
+                member.setNickName(data.getNickName());
+                member.setInfo(data.getInfo());
+                // save
+                memberRepository.save(member);
+            } else {
+                throw new DuplicateKeyException(data.getNickName() + "는 이미 존재하는 별명입니다.");
+            }
         } else {
             throw new DuplicateKeyException(data.getId() + "는 이미 존재하는 아이디입니다.");
         }
