@@ -69,7 +69,26 @@ public class MemberService {
         String formPw = data.getPassword();
         if (dbPw.equals(formPw)) {
             memberRepository.delete(member);
-            
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean update(MemberForm data) {
+
+        Member member = memberRepository.findById(data.getId()).get();
+
+        String dbPw = member.getPassword();
+        String formPw = data.getPassword();
+        if (dbPw.equals(formPw)) {
+
+            member.setNickName(data.getNickName());
+            member.setInfo(data.getInfo());
+            memberRepository.save(member);
+
             return true;
         } else {
             return false;
