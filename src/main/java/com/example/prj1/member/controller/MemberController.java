@@ -59,4 +59,21 @@ public class MemberController {
 
         return "member/view";
     }
+
+    @PostMapping("remove")
+    public String remove(MemberForm data, RedirectAttributes rttr) {
+        boolean result = memberService.remove(data);
+
+        if (result) {
+            rttr.addFlashAttribute("alert", Map.of("code", "danger", "message", data.getId() + " 탈퇴가 완료되었습니다."));
+
+            return "redirect:/board/list";
+        } else {
+            rttr.addFlashAttribute("alert", Map.of("code", "danger", "message", "암호가 일치하지 않습니다."));
+            rttr.addAttribute("id", data.getId());
+
+            return "redirect:/member/view";
+        }
+
+    }
 }

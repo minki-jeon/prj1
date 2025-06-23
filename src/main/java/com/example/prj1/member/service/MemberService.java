@@ -52,6 +52,7 @@ public class MemberService {
 
     public MemberDto get(String id) {
         Member member = memberRepository.findById(id).get();
+
         MemberDto dto = new MemberDto();
         dto.setId(id);
         dto.setNickName(member.getNickName());
@@ -59,5 +60,20 @@ public class MemberService {
         dto.setCreateAt(member.getCreatedAt());
 
         return dto;
+    }
+
+    public boolean remove(MemberForm data) {
+        Member member = memberRepository.findById(data.getId()).get();
+
+        String dbPw = member.getPassword();
+        String formPw = data.getPassword();
+        if (dbPw.equals(formPw)) {
+            memberRepository.delete(member);
+            
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
