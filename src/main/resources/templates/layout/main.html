@@ -20,7 +20,7 @@
             <button class="navbar-toggler"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent">
-                <span class="naveber-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <!--        .collapse.navbar-collapse#navbarSupportedContent-->
@@ -82,8 +82,8 @@
                     <input type="text" class="form-control me-2" name="keyword"
                            th:value="${(param.keyword == null || param.keyword[0].isBlank()) ? '' : param.keyword[0]}">
                     <button class="btn btn-outline-success">
-                        <!-- word-break; 텍스트 단어별로 글자 줄바꿔지지않게 -->
-                        <span style="word-break: keep-all">
+                        <!-- word-break:keep-all : 한글단어가 끊어져서 줄바꿈되는 것을 방지  -->
+                        <span style="word-break: keep-all; display: inline-flex; align-items: center; gap: 4px;">
                             검색 <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
                     </button>
