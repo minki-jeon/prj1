@@ -71,6 +71,7 @@
                         <a th:href="@{/member/view(id=${session.loggedInUser.id})}"
                            class="nav-link"
                            th:classappend="${current == 'memberView' ? 'active' : ''}">
+                            <i class="fa-solid fa-circle-user"></i>
                             <span th:text="${session.loggedInUser.nickName}">별명</span>
                         </a>
                     </li>
@@ -83,7 +84,7 @@
                     <button class="btn btn-outline-success">
                         <!-- word-break; 텍스트 단어별로 글자 줄바꿔지지않게 -->
                         <span style="word-break: keep-all">
-                            검색
+                            검색 <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
                     </button>
                 </form>
