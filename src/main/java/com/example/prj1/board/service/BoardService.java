@@ -48,7 +48,6 @@ public class BoardService {
 
         Page<BoardListInfo> boardPage = boardRepository.findAllBy(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
         List<BoardListInfo> boardList = boardPage.getContent();
-        System.out.println(boardList);
 //        boardPage.getTotalElements();
 //        boardPage.getTotalPages();
 
