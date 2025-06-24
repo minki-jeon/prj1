@@ -75,13 +75,22 @@ public class BoardController {
     }
 
     @PostMapping("remove")
-    public String remove(Integer id, RedirectAttributes rttr) {
-        boardService.remove(id);
+    public String remove(Integer id,
+                         @SessionAttribute(value = "loggedInUser", required = false) MemberDto user,
+                         RedirectAttributes rttr) {
+        boolean result = boardService.remove(id, user);
 
-        rttr.addFlashAttribute("alert",
-                Map.of("code", "danger", "message", id + "번 게시물이 삭제 되었습니다."));
+        if (result) {
+            rttr.addFlashAttribute("alert",
+                    Map.of("code", "danger", "message", id + "번 게시물이 삭제 되었습니다."));
 
-        return "redirect:/board/list";
+            return "redirect:/board/list";
+        } else {
+            rttr.addFlashAttribute("alert",
+                    Map.of("code", "danger", "message", id + "번 게시물이 삭제되지 않았습니다."));
+            rttr.addAttribute("id", id);
+            return "redirect:/board/view";
+        }
     }
 
     @GetMapping("edit")
@@ -92,10 +101,17 @@ public class BoardController {
     }
 
     @PostMapping("edit")
-    public String edit(BoardForm data, RedirectAttributes rttr) {
-        boardService.update(data);
+    public String editPost(BoardForm data,
+                           @SessionAttribute(value = "loggedInUser", required = false) MemberDto user,
+                           RedirectAttributes rttr) {
 
-        rttr.addFlashAttribute("alert", Map.of("code", "success", "message", data.getId() + "번 게시물이 수정되었습니다."));
+        boolean result = boardService.update(data, user);
+
+        if (result) {
+            rttr.addFlashAttribute("alert", Map.of("code", "success", "message", data.getId() + "번 게시물이 수정되었습니다."));
+        } else {
+            rttr.addFlashAttribute("alert", Map.of("code", "danger", "message", data.getId() + "번 게시물이 수정되지 않았습니다."));
+        }
 
         rttr.addAttribute("id", data.getId());
 
