@@ -1,5 +1,6 @@
 package com.example.prj1.member.service;
 
+import com.example.prj1.board.repository.BoardRepository;
 import com.example.prj1.member.dto.MemberDto;
 import com.example.prj1.member.dto.MemberForm;
 import com.example.prj1.member.dto.MemberListInfo;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
     public void add(MemberForm data) {
         // id 중복 체크
@@ -70,6 +72,10 @@ public class MemberService {
                 String dbPw = member.getPassword();
                 String formPw = data.getPassword();
                 if (dbPw.equals(formPw)) {
+                    // 탈퇴 처리 전 작성한 글 삭제
+                    boardRepository.deleteByWriter(member);
+
+                    // 회원 탈퇴
                     memberRepository.delete(member);
 
                     return true;
@@ -79,7 +85,7 @@ public class MemberService {
         return false;
     }
 
-    public boolean update(MemberForm data, MemberDto user) {
+    public boolean update(MemberForm data, MemberDto user, HttpSession session) {
         if (user != null) {
 
             Member member = memberRepository.findById(data.getId()).get();
@@ -93,6 +99,8 @@ public class MemberService {
                     member.setInfo(data.getInfo());
 
                     memberRepository.save(member);
+                    // TODO nav 닉네임 반영
+
                     return true;
                 }
             }
