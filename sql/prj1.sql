@@ -41,3 +41,19 @@ CREATE TABLE member
 SELECT *
 FROM member;
 # DROP TABLE member;
+
+
+# 회원만 글을 작성할 수 있으므로 board.writer를 member.id로 update
+UPDATE board
+SET writer = 'Cha'
+WHERE id % 2 = 1;
+UPDATE board
+SET writer = 'Son'
+WHERE id % 2 = 0;
+# 외래키 제약 사항 추가
+ALTER TABLE board
+    ADD FOREIGN KEY (writer) REFERENCES member (id);
+ALTER TABLE board
+    MODIFY writer VARCHAR(100) NOT NULL;
+
+
