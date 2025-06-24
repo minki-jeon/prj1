@@ -78,13 +78,15 @@ public class MemberController {
     @PostMapping("remove")
     public String remove(MemberForm data,
                          @SessionAttribute(value = "loggedInUser", required = false) MemberDto user,
+                         HttpSession session,
                          RedirectAttributes rttr) {
-        // TODO : 작성한 글이 존재하면 탈퇴 불가 처리
         boolean result = memberService.remove(data, user);
 
         if (result) {
             rttr.addFlashAttribute("alert", Map.of("code", "danger", "message", data.getId() + " 탈퇴가 완료되었습니다."));
 
+            // 탈퇴 후 로그아웃 처리
+            session.invalidate();
             return "redirect:/board/list";
         } else {
             rttr.addFlashAttribute("alert", Map.of("code", "danger", "message", "암호가 일치하지 않습니다."));
@@ -114,10 +116,11 @@ public class MemberController {
     @PostMapping("edit")
     public String edit(MemberForm data,
                        @SessionAttribute(value = "loggedInUser", required = false) MemberDto user,
+                       HttpSession session,
                        RedirectAttributes rttr) {
 
         // TODO : 닉네임 변경 후 nav 별명 반영
-        boolean result = memberService.update(data, user);
+        boolean result = memberService.update(data, user, session);
         if (result) {
             rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "회원 정보가 변경되었습니다."));
 
