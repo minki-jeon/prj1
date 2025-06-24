@@ -2,13 +2,12 @@ package com.example.prj1.board.controller;
 
 import com.example.prj1.board.dto.BoardForm;
 import com.example.prj1.board.service.BoardService;
+import com.example.prj1.member.dto.MemberDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
@@ -21,18 +20,35 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("write")
-    public String writeView() {
+    public String writeView(HttpSession session, RedirectAttributes rttr) {
+        Object user = session.getAttribute("loggedInUser");
 
-        return "board/write";
+        if (user != null) {
+            return "board/write";
+        } else {
+            rttr.addFlashAttribute("alert", Map.of("code", "warning", "message", "로그인 후 글을 작성해주세요."));
+
+            return "redirect:/member/login";
+        }
+
     }
 
     @PostMapping("write")
-    public String write(BoardForm data, RedirectAttributes rttr) {
-        boardService.add(data);
+    public String writePost(BoardForm data, @SessionAttribute(name = "loggedInUser", required = false) MemberDto user, RedirectAttributes rttr) {
+//        Object user = session.getAttribute("loggedInUser");
 
-        rttr.addFlashAttribute("alert", Map.of("code", "primary", "message", "새 게시물이 등록되었습니다."));
+        if (user != null) {
+            boardService.add(data, user);
 
-        return "redirect:/board/list";
+            rttr.addFlashAttribute("alert", Map.of("code", "primary", "message", "새 게시물이 등록되었습니다."));
+
+            return "redirect:/board/list";
+        } else {
+            rttr.addFlashAttribute("alert", Map.of("code", "warning", "message", "로그인 후 글을 작성해주세요."));
+            return "redirect:/member/login";
+        }
+
+
     }
 
     @GetMapping("list")
