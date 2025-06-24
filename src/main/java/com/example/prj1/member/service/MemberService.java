@@ -99,13 +99,30 @@ public class MemberService {
                     member.setInfo(data.getInfo());
 
                     memberRepository.save(member);
-                    // TODO nav 닉네임 반영
+                    // nav 닉네임 반영
+//                    MemberDto dto = new MemberDto();
+//                    dto.setId(member.getId());
+//                    dto.setNickName(member.getNickName());
+//                    dto.setInfo(member.getInfo());
+//                    dto.setCreateAt(member.getCreatedAt());
+//                    session.setAttribute("loggedInUser", dto);
+                    //* Extract > Method 'addUserToSession' > Duplicates [Replace] (Method login() > addUserToSession() )
+                    addUserToSession(session, member);
 
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private static void addUserToSession(HttpSession session, Member member) {
+        MemberDto dto = new MemberDto();
+        dto.setId(member.getId());
+        dto.setNickName(member.getNickName());
+        dto.setInfo(member.getInfo());
+        dto.setCreateAt(member.getCreatedAt());
+        session.setAttribute("loggedInUser", dto);
     }
 
     public boolean updatePassword(String id, String oldPassword, String newPassword) {
@@ -126,13 +143,7 @@ public class MemberService {
         if (db.isPresent()) {
             String dbPassword = db.get().getPassword();
             if (dbPassword.equals(password)) {
-                MemberDto dto = new MemberDto();
-                dto.setId(id);
-                dto.setNickName(db.get().getNickName());
-                dto.setInfo(db.get().getInfo());
-                dto.setCreateAt(db.get().getCreatedAt());
-
-                session.setAttribute("loggedInUser", dto);
+                addUserToSession(session, db.get());
 
                 return true;
             }
