@@ -63,38 +63,41 @@ public class MemberService {
         return dto;
     }
 
-    public boolean remove(MemberForm data) {
-        Member member = memberRepository.findById(data.getId()).get();
+    public boolean remove(MemberForm data, MemberDto user) {
+        if (user != null) {
+            Member member = memberRepository.findById(data.getId()).get();
+            if (member.getId().equals(user.getId())) {
+                String dbPw = member.getPassword();
+                String formPw = data.getPassword();
+                if (dbPw.equals(formPw)) {
+                    memberRepository.delete(member);
 
-        String dbPw = member.getPassword();
-        String formPw = data.getPassword();
-        if (dbPw.equals(formPw)) {
-            memberRepository.delete(member);
-
-            return true;
-        } else {
-            return false;
+                    return true;
+                }
+            }
         }
-
+        return false;
     }
 
-    public boolean update(MemberForm data) {
+    public boolean update(MemberForm data, MemberDto user) {
+        if (user != null) {
 
-        Member member = memberRepository.findById(data.getId()).get();
+            Member member = memberRepository.findById(data.getId()).get();
+            if (member.getId().equals(user.getId())) {
+                String dbPw = member.getPassword();
+                String formPw = data.getPassword();
 
-        String dbPw = member.getPassword();
-        String formPw = data.getPassword();
-        if (dbPw.equals(formPw)) {
+                if (dbPw.equals(formPw)) {
 
-            member.setNickName(data.getNickName());
-            member.setInfo(data.getInfo());
-            memberRepository.save(member);
+                    member.setNickName(data.getNickName());
+                    member.setInfo(data.getInfo());
 
-            return true;
-        } else {
-            return false;
+                    memberRepository.save(member);
+                    return true;
+                }
+            }
         }
-
+        return false;
     }
 
     public boolean updatePassword(String id, String oldPassword, String newPassword) {
