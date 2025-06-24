@@ -5,6 +5,7 @@ import com.example.prj1.member.dto.MemberForm;
 import com.example.prj1.member.dto.MemberListInfo;
 import com.example.prj1.member.entity.Member;
 import com.example.prj1.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -107,5 +108,25 @@ public class MemberService {
         } else {
             return false;
         }
+    }
+
+    public boolean login(String id, String password, HttpSession session) {
+        Optional<Member> db = memberRepository.findById(id);
+        if (db.isPresent()) {
+            String dbPassword = db.get().getPassword();
+            if (dbPassword.equals(password)) {
+                MemberDto dto = new MemberDto();
+                dto.setId(id);
+                dto.setNickName(db.get().getNickName());
+                dto.setInfo(db.get().getInfo());
+                dto.setCreateAt(db.get().getCreatedAt());
+
+                session.setAttribute("loggedInUser", dto);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
