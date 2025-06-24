@@ -38,7 +38,7 @@ public class BoardService {
     }
 
     //    public List<BoardListInfo> list(Integer page) {
-    public Map<String, Object> list(Integer page) {
+    public Map<String, Object> list(Integer page, String keyword) {
         // 전체 조회
 //        List<Board> list = boardRepository.findAll();
         // projection
@@ -46,8 +46,15 @@ public class BoardService {
         // paging
 //        List<BoardListInfo> boardList = boardRepository.findAllBy(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
 
-        Page<BoardListInfo> boardPage = boardRepository.findAllBy(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+        Page<BoardListInfo> boardPage = null;
+        
+        if (keyword == null || keyword.isBlank()) {
+            boardPage = boardRepository.findAllBy(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+        } else {
+            boardPage = boardRepository.searchByKeyword("%" + keyword + "%", PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+        }
         List<BoardListInfo> boardList = boardPage.getContent();
+
 //        boardPage.getTotalElements();
 //        boardPage.getTotalPages();
 
