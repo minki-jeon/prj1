@@ -117,4 +117,11 @@ public class MemberController {
         rttr.addAttribute("id", id);
         return "redirect:/member/edit";
     }
+
+    @GetMapping("login")
+    public String login() {
+        return "member/login";
+    }
+
+
 }
