@@ -119,7 +119,6 @@ public class MemberController {
                        HttpSession session,
                        RedirectAttributes rttr) {
 
-        // TODO : 닉네임 변경 후 nav 별명 반영
         boolean result = memberService.update(data, user, session);
         if (result) {
             rttr.addFlashAttribute("alert", Map.of("code", "success", "message", "회원 정보가 변경되었습니다."));
